@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+  FILE *fptr1=NULL,*fptr2=NULL;
+  char c;
+  fptr1=fopen("abc.txt","r");
+  if(fptr1==NULL){
+    printf("There is no such file");
+    exit(1);
+  }
+  fptr2=fopen("destination.txt","w");
+  if(fptr1==NULL){
+    printf("Error");
+    exit(1);
+  }
+  while ((c=fgetc(fptr1))!=EOF){
+    fputc(c,fptr2);
+  }
+  printf("SUCESSFULLY COPIED");
+  fclose(fptr1);
+  fclose(fptr2);
+}
+
+points to do:
+go the place where the dev c files are stored.
+create a notepad file "abc.txt" there
+then run this code.
