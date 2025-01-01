@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+int main() {
+	int max;
+	printf("Enter total no of requests: ");
+	scanf("%d",&max);
+    int cy[max + 3]; 
+    int mid, start, end, t, i, j,t1,t2,a,b,pos,sol;
+
+    printf("Enter %d elements:\n", max);
+    for (i = 0; i < max; i++) {
+        scanf("%d", &cy[i]);
+    }
+    printf("Enter start, mid, and end values:\n");
+    scanf("%d %d %d", &start, &mid, &end);
+
+    cy[max] = start;
+    cy[max + 1] = mid;
+    cy[max + 2] = end;
+
+    for (i = 0; i < max + 3; i++) {
+        for (j = i + 1; j < max + 3; j++) {
+            if (cy[i] > cy[j]) {
+                t = cy[i];
+                cy[i] = cy[j];
+                cy[j] = t;
+            }
+        }
+    }
+
+    t1=end-mid;
+    t2=end-cy[1];
+    sol=t1+t2;
+    printf("Total seek time: %d",sol);
+    return 0;
+}
