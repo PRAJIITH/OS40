@@ -1,0 +1,20 @@
+#include<sys/ipc.h>
+#include<sys/msg.h>
+#include<stdio.h>
+struct message_buffer{
+    long msg_type;
+    char msg_txt[100];
+}message;
+int main()
+{
+    key_t key=ftok("msgqueue",55);
+    
+    int msgid=msgget(key,0666|IPC_CREAT);
+    message.msg_type=1;
+    printf("Enter data: ");
+    scanf("%s",message.msg_txt);
+    msgsnd(msgid,&message,sizeof(message),0);
+    
+    printf("Data from the memory queue: %s",message.msg_txt);
+
+}
