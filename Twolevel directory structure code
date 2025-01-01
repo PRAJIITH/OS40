@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char sdName[50];
+    char files[100][50];  
+    int fileCount;
+} Directory;
+
+Directory dirs[10];
+int dirCount = 0;
+
+void createDirectory(const char* name) {
+    if (dirCount >= 10) {
+        printf("Maximum subdirectories reached!\n");
+        return;
+    }
+
+    strcpy(dirs[dirCount].sdName, name);
+    dirs[dirCount].fileCount = 0;
+    dirCount++;
+    printf("Subdirectory '%s' created successfully.\n", name);
+}
+
+void addFile(const char* sdName, const char* fileName) {
+    for (int i = 0; i < dirCount; i++) {
+        if (strcmp(dirs[i].sdName, sdName) == 0) {
+            if (dirs[i].fileCount >= 100) {
+                printf("Maximum files in subdirectory '%s' reached!\n", sdName);
+                return;
+            }
+
+            strcpy(dirs[i].files[dirs[i].fileCount], fileName);
+            dirs[i].fileCount++;
+            printf("File '%s' added to subdirectory '%s'.\n", fileName, sdName);
+            return;
+        }
+    }
+
+    printf("Subdirectory '%s' not found!\n", sdName);
+}
+
+void listFiles(const char* sdName) {
+    for (int i = 0; i < dirCount; i++) {
+        if (strcmp(dirs[i].sdName, sdName) == 0) {
+            printf("Files in subdirectory '%s':\n", sdName);
+            for (int j = 0; j < dirs[i].fileCount; j++) {
+                printf("  %s\n", dirs[i].files[j]);
+            }
+            return;
+        }
+    }
+
+    printf("Subdirectory '%s' not found!\n", sdName);
+}
+
+int main() {
+    int choice;
+    char sdName[50], fileName[50];
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Create Subdirectory\n");
+        printf("2. Add File to Subdirectory\n");
+        printf("3. List Files in Subdirectory\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter subdirectory name: ");
+                scanf("%s", sdName);
+                createDirectory(sdName);
+                break;
+            case 2:
+                printf("Enter subdirectory name: ");
+                scanf("%s", sdName);
+                printf("Enter file name: ");
+                scanf("%s", fileName);
+                addFile(sdName, fileName);
+                break;
+            case 3:
+                printf("Enter subdirectory name: ");
+                scanf("%s", sdName);
+                listFiles(sdName);
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                return 0;
+            default:
+                printf("Invalid choice!\n");
+                break;
+        }
+    }
+}
