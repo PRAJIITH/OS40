@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include<math.h>
+#include<stdlib.h>
+int main() {
+	int max;
+	printf("Enter total no of requests: ");
+	scanf("%d",&max);
+    int cy[max]; 
+    int mid, start, end, t, i, j,t1,t2,a,b,pos,sol=0;
+
+    printf("Enter %d elements:\n", max);
+    for (i = 0; i < max; i++) {
+        scanf("%d", &cy[i]);
+    }
+    printf("Enter start, mid, and end values:\n");
+    scanf("%d %d %d", &start, &mid, &end);
+
+    t1=mid-cy[0];
+    if(t1<0){
+        t1=abs(t1);
+    }
+    for(i=0;i<max-1;i++){
+        t2=cy[i+1]-cy[i];
+        if(t2<0){
+            t2=abs(t2);
+        }
+        sol+=t2;
+    }
+    sol+=t1;
+    printf("\nTotal seek time: %d",sol);
+    return 0;
+}
