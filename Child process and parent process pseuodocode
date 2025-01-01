@@ -1,5 +1,0 @@
-pid_t child,parent;
-child=getpid();
-parent=getppid();
-printf("Child process id: %d\n",child);
-printf("Parent process id: %d",parent);
