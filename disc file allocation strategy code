@@ -1,0 +1,77 @@
+#include <stdio.h>
+#define MAX_BLK 5
+struct Block {
+    int data;
+    int next;
+};
+
+struct File {
+    int first;
+    int last;
+};
+
+void addBlock(struct File *f, struct Block blk[], int d) {
+    static int idx = 0;
+
+    if (idx >= MAX_BLK) {
+        printf("Max blocks reached.\n");
+        return;
+    }
+
+    blk[idx].data = d;
+    blk[idx].next = -1;
+
+    if (f->first == -1) {
+        f->first = idx;
+        f->last = idx;
+    } else {
+        blk[f->last].next = idx;
+        f->last = idx;
+    }
+
+    idx++;
+}
+
+void displayFile(struct File *f, struct Block blk[]) {
+    int idx = f->first;
+
+    if (idx == -1) {
+        printf("File is empty.\n");
+        return;
+    }
+
+    while (idx != -1) {
+        printf("Block Data: %d\n", blk[idx].data);
+        idx = blk[idx].next;
+    }
+}
+
+int main() {
+    struct Block blk[MAX_BLK];
+    struct File f = {-1, -1};
+    int ch, d;
+
+    while (1) {
+    	printf("Menu:");
+        printf("\n1. Add Block\n2. Display File\n3. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                printf("Enter block data: ");
+                scanf("%d", &d);
+                addBlock(&f, blk, d);
+                break;
+            case 2:
+                displayFile(&f, blk);
+                break;
+            case 3:
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+
+    return 0;
+}
