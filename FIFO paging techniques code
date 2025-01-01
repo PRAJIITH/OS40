@@ -1,0 +1,56 @@
+#include <stdio.h>  
+int main()  
+{  
+    int nor,i;  
+    int pageFaults = 0;  
+    int frames;  
+    printf("Enter no of requests: ");
+    scanf("%d",&nor);
+    int request[nor];
+    printf("Enter the requests");
+    for(i=0;i<nor;i++){
+    	scanf("%d",&request[i]);
+	}
+	printf("Enter no of frames: ");
+	scanf("%d",&frames);
+    int m, n, s, pages;   
+    pages = nor;   
+    printf(" Incoming \t\t Frame 1 \t\t Frame 2 \t\t Frame 3 ");  
+    int temp[frames];  
+    for(m = 0; m < frames; m++)  
+    {  
+        temp[m] = -1;  
+    }  
+    for(m = 0; m < pages; m++)  
+    {  
+        s = 0;   
+        for(n = 0; n < frames; n++)  
+        {  
+            if(request[m] == temp[n])  
+            {  
+                s++;  
+                pageFaults--;  
+            }  
+        }  
+        pageFaults++;  
+        if((pageFaults <= frames) && (s == 0))  
+        {  
+            temp[m] = request[m];  
+        }  
+        else if(s == 0)  
+        {  
+            temp[(pageFaults - 1) % frames] = request[m];  
+        }  
+        printf("\n");  
+        printf("%d\t\t\t",request[m]);  
+        for(n = 0; n < frames; n++)  
+        {  
+            if(temp[n] != -1)  
+                printf(" %d\t\t\t", temp[n]);  
+            else  
+                printf(" - \t\t\t");  
+        }  
+    }  
+    printf("\n\nTotal Page Faults:\t%d\n", pageFaults);  
+    return 0;  
+}
