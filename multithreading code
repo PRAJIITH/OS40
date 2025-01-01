@@ -1,0 +1,21 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+void* func(void* vargp)
+{
+    sleep(3);
+    printf("Thread created successfully \n");
+    return NULL;
+}
+
+int main()
+{
+    pthread_t thread_id;
+    printf("Before Thread\n");
+    pthread_create(&thread_id, NULL, func, NULL);
+    pthread_join(thread_id, NULL);
+    printf("After Thread\n");
+    exit(0);
+}
