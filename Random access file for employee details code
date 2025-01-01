@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_EMPLOYEES 100
+
+struct Employee {
+    int empId;
+    char empName[50];
+    float empSalary;
+};
+
+// Function to add an employee to the file
+void addEmployee(FILE *filePtr) {
+    struct Employee emp;
+    printf("Enter Employee ID: ");
+    scanf("%d", &emp.empId);
+    printf("Enter Employee Name: ");
+    scanf("%s", emp.empName);
+    printf("Enter Employee Salary: ");
+    scanf("%f", &emp.empSalary);
+
+    fprintf(filePtr, "%d %s %.2f\n", emp.empId, emp.empName, emp.empSalary);
+    printf("Employee details added successfully.\n");
+}
+
+// Function to display an employee's details
+void displayEmployee(FILE *filePtr) {
+    struct Employee emp;
+    int empId;
+    printf("Enter Employee ID to display: ");
+    scanf("%d", &empId);
+
+    rewind(filePtr); // Reset to the beginning of the file
+    while (fscanf(filePtr, "%d %s %f", &emp.empId, emp.empName, &emp.empSalary) != EOF) {
+        if (emp.empId == empId) {
+            printf("Employee ID: %d\n", emp.empId);
+            printf("Employee Name: %s\n", emp.empName);
+            printf("Employee Salary: %.2f\n", emp.empSalary);
+            return;
+        }
+    }
+    printf("Employee ID not found.\n");
+}
+
+// Function to update an employee's details
+void updateEmployee(FILE *filePtr) {
+    struct Employee emp;
+    int empId;
+    FILE *tempFile = fopen("temp.txt", "w+");
+    
+    if (tempFile == NULL) {
+        printf("Error opening temporary file.\n");
+        return;
+    }
+
+    printf("Enter Employee ID to update: ");
+    scanf("%d", &empId);
+
+    rewind(filePtr); // Reset to the beginning of the file
+    int found = 0;
+    while (fscanf(filePtr, "%d %s %f", &emp.empId, emp.empName, &emp.empSalary) != EOF) {
+        if (emp.empId == empId) {
+            printf("Enter new Employee Name: ");
+            scanf("%s", emp.empName);
+            printf("Enter new Employee Salary: ");
+            scanf("%f", &emp.empSalary);
+            found = 1;
+        }
+        fprintf(tempFile, "%d %s %.2f\n", emp.empId, emp.empName, emp.empSalary);
+    }
+
+    if (found) {
+        printf("Employee details updated successfully.\n");
+    } else {
+        printf("Employee ID not found.\n");
+    }
+
+    fclose(filePtr);
+    fclose(tempFile);
+    filePtr = fopen("employee.txt", "r+");
+}
+
+int main() {
+    FILE *filePtr;
+    filePtr = fopen("employee.txt", "r+");
+
+    if (filePtr == NULL) {
+        filePtr = fopen("employee.txt", "w+");
+        if (filePtr == NULL) {
+            printf("Error creating the file.\n");
+            return 1;
+        }
+    }
+
+    int choice;
+    do {
+        printf("\nEmployee Database Menu:\n");
+        printf("1. Add Employee\n");
+        printf("2. Display Employee Details\n");
+        printf("3. Update Employee Details\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addEmployee(filePtr);
+                break;
+
+            case 2:
+                displayEmployee(filePtr);
+                break;
+
+            case 3:
+                updateEmployee(filePtr);
+                break;
+
+            case 4:
+                fclose(filePtr);
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
