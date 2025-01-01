@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+
+struct file{
+    char name[20];
+    int nob,blocks[30];
+}f[30];
+
+int main(){
+    int n,i,j;
+    char s[20];
+    printf("Enter no of files: ");
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        printf("Enter file name: ");
+        scanf("%s",f[i].name);
+        printf("Enter no.of Blocks: ");
+        scanf("%d",&f[i].nob);
+        printf("Enter Block of the file: ");
+        for(j=0;j<f[i].nob;j++){
+            scanf("%d",&f[i].blocks[j]);
+        }
+    }
+    printf("Enter the file name to be searched: ");
+    scanf("%s",s);
+    for(i=0;i<n;i++){
+        if(strcmp(s,f[i].name)==0){
+            break;
+        }
+    }
+    if(i==n){
+        printf("File not found");
+    }
+    else{
+        printf("File name: ");
+        printf("%s",f[i].name);
+        printf("\nNo. of blocks: ");
+        printf("%d",f[i].nob);
+        printf("\nBlocks allocted: ");
+        for(j=0;j<f[i].nob;j++){
+            printf("%d\t",f[i].blocks[j]);
+        }
+    }
+}
